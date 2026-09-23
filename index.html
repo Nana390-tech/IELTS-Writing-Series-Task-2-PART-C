@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Task 2 Essay Language 3: Good Side, Bad Side</title>
+<style>
+:root{--p:#1f4fbf;--pd:#153a8f;--a:#f5c518;--ai:#2a2000;--bg:#f1f4fc;--soft:#e2e9f9;}
+*{box-sizing:border-box}
+html{font-size:19px}
+body{margin:0;background:var(--bg);color:#1d2430;font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;line-height:1.6}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--a);outline-offset:2px}
+.ar{direction:rtl;text-align:right;font-family:Tahoma,"Segoe UI","Noto Naskh Arabic",Arial,sans-serif;color:#5b6474;font-size:.95rem;margin:.2rem 0 .6rem}
+.ar.big{font-size:1.35rem;color:var(--pd);font-weight:700;text-align:center;margin:0 0 .4rem}
+.small{font-size:.85rem;color:#5b6474}
+
+/* header */
+.top{position:sticky;top:0;z-index:20;background:var(--pd);color:#fff;display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;align-items:center;justify-content:space-between;padding:.7rem 1.2rem}
+.brand{display:flex;flex-direction:column;line-height:1.25}
+.series{font-size:.8rem;opacity:.8}
+.ltitle{font-size:1.15rem;font-weight:700}
+.tools{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.pill{background:var(--a);color:var(--ai);font-weight:700;border-radius:999px;padding:.2rem .8rem;font-size:.9rem;white-space:nowrap}
+.prog{width:120px;height:10px;background:rgba(255,255,255,.25);border-radius:6px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--a);transition:width .4s}
+.tbtn{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.55);border-radius:8px;padding:.15rem .7rem;font-size:.85rem}
+.tbtn:hover{background:rgba(255,255,255,.12)}
+
+/* rail */
+#rail{display:flex;gap:.4rem;overflow-x:auto;padding:.8rem 1.2rem;background:#fff;border-bottom:1px solid #e3e6ec}
+.rs{flex:1 0 auto;min-width:118px;display:flex;align-items:center;gap:.5rem;border:2px solid #e3e6ec;background:#fff;border-radius:10px;padding:.35rem .6rem;text-align:left;color:#1d2430}
+.rs .n{flex:none;width:1.8rem;height:1.8rem;border-radius:50%;display:grid;place-items:center;background:#eef0f4;font-weight:700;font-size:.85rem}
+.rs .t{display:flex;flex-direction:column;line-height:1.15;font-size:.85rem;font-weight:600}
+.rs .t small{font-weight:400;color:#6b7383;font-family:Tahoma,Arial,sans-serif}
+.rs.on{border-color:var(--p);background:var(--soft)}
+.rs.on .n{background:var(--p);color:#fff}
+.rs.ok .n{background:var(--a);color:var(--ai)}
+
+main{max-width:900px;margin:0 auto;padding:1.4rem 1rem 2rem}
+footer{text-align:center;color:#6b7383;font-size:.85rem;padding:1.2rem 1rem 2rem}
+
+/* hero */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:0 1.4rem;align-items:start;margin:.4rem 0 1.4rem}
+.hero .num{grid-row:span 4;font-size:6.5rem;line-height:.85;font-weight:800;color:var(--a);-webkit-text-stroke:3px var(--pd);paint-order:stroke fill}
+.hero h1{margin:.2rem 0 .3rem;font-size:2rem;line-height:1.2;color:var(--pd)}
+.hero .sub{margin:0 0 .2rem;font-size:1.05rem}
+.obj{background:#fff;border-left:6px solid var(--a);border-radius:0 10px 10px 0;padding:.7rem 1rem;margin-top:.5rem}
+.obj ul{margin:.3rem 0 0;padding-left:1.2rem}
+@media (max-width:620px){.hero{grid-template-columns:1fr}.hero .num{font-size:4rem;grid-row:auto}}
+
+/* cards */
+.card{background:#fff;border:1px solid #e3e6ec;border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1rem}
+.card h2{margin:0 0 .4rem;font-size:1.5rem;color:var(--pd)}
+h3{color:var(--pd);font-size:1.25rem;margin:1.6rem 0 .6rem}
+.lead{margin:.2rem 0}
+.count{font-weight:700;color:var(--pd)}
+.row{display:flex;gap:.8rem;align-items:center;flex-wrap:wrap;margin-top:.8rem}
+.btn{background:var(--p);color:#fff;border:0;border-radius:10px;padding:.55rem 1.2rem;font-weight:700}
+.btn:hover{background:var(--pd)}
+.btn.ghost{background:#fff;color:var(--pd);border:2px solid var(--p)}
+.btn.ghost:hover{background:var(--soft)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* notice */
+.passage{background:var(--soft);border-radius:10px;padding:.8rem 1rem;margin:.6rem 0;font-size:1.08rem;line-height:1.95;word-spacing:-.05em}
+.passage p{margin:.2rem 0}
+.tok{cursor:pointer;border-radius:5px;padding:.05rem .08rem;margin:0 -.04rem;transition:background .2s}
+.tok:hover{background:rgba(0,0,0,.06)}
+.tok.hit{background:var(--a);color:var(--ai);font-weight:700}
+.tok.miss{background:#ffd9d9;animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+
+/* word cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:.9rem;margin-top:.8rem}
+.flip{perspective:900px;height:250px;cursor:pointer}
+.flip .in{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.flip.on .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:12px;padding:.9rem;display:flex;flex-direction:column}
+.front{background:var(--p);color:#fff;justify-content:center;align-items:center;text-align:center}
+.front b{font-size:1.45rem;line-height:1.25}
+.front .pos{font-size:.8rem;opacity:.85;margin-bottom:.3rem}
+.flip.seen .front{background:var(--pd)}
+.flip.seen .front::after{content:"✓";position:absolute;top:.5rem;right:.7rem;color:var(--a);font-weight:800}
+.say{margin-top:.8rem;background:rgba(255,255,255,.18);border:0;border-radius:999px;color:#fff;font-size:1.1rem;padding:.25rem .8rem}
+.back{background:#fff;border:3px solid var(--p);transform:rotateY(180deg);overflow:auto;font-size:.9rem}
+.back .def{margin:.2rem 0 .5rem;font-weight:600}
+.back .ex{margin:0;color:#3a4252;font-style:italic}
+@media (prefers-reduced-motion:reduce){.flip .in{transition:none}}
+
+/* marks */
+mark.lw{background:transparent;color:var(--pd);font-weight:700;border-bottom:3px solid var(--a);padding:0 .05em}
+.lk{border-bottom:3px dotted #e0467c;color:#b0205a;font-weight:600}
+.hide-lw mark.lw{color:inherit;font-weight:inherit;border:0}
+.hide-lk .lk{color:inherit;font-weight:inherit;border:0}
+
+/* items */
+.item{display:grid;grid-template-columns:2.2rem 1fr;gap:.8rem;background:#fff;border:1px solid #e3e6ec;border-radius:14px;padding:1rem 1.2rem;margin-bottom:.9rem}
+.item.done{border-color:var(--p)}
+.qnum{width:2.2rem;height:2.2rem;border-radius:50%;background:var(--soft);color:var(--pd);font-weight:800;display:grid;place-items:center}
+.item.done .qnum{background:var(--p);color:#fff}
+.q{margin:.1rem 0 .6rem;font-size:1.05rem;font-weight:600}
+.gap{display:inline-block;min-width:5.5rem;border-bottom:3px solid var(--p);text-align:center;font-weight:700;color:var(--pd)}
+.opts{display:grid;gap:.5rem}
+.opt{text-align:left;background:#fff;border:2px solid #d8dde6;border-radius:10px;padding:.5rem .8rem;color:#1d2430}
+.opt:hover:not([disabled]){border-color:var(--p);background:var(--soft)}
+.opt.right{border-color:#1f8a4c;background:#e6f6ec;font-weight:700}
+.opt.wrong{border-color:#d33;background:#fdeaea;text-decoration:line-through;color:#8a3b3b}
+.opt[disabled]{cursor:default}
+.fb{margin-top:.7rem;border-radius:10px;padding:.55rem .8rem;font-size:.95rem}
+.fb.ok{background:#e6f6ec;border-left:5px solid #1f8a4c}
+.fb.no{background:#fdeaea;border-left:5px solid #d33}
+.hint{font-size:.85rem;color:#5b6474;margin:-.3rem 0 .5rem}
+
+/* sort */
+.bank{display:flex;flex-wrap:wrap;gap:.5rem;min-height:2.6rem;margin-bottom:.7rem}
+.tile{background:#fff;border:2px solid var(--p);color:var(--pd);border-radius:9px;padding:.35rem .7rem;font-weight:600;text-align:left}
+.tile.sel{background:var(--p);color:#fff}
+.tile.bad{animation:shake .35s;border-color:#d33}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.6rem}
+.bucket{border:2px dashed var(--p);border-radius:12px;padding:.6rem;background:var(--soft);text-align:left;min-height:6rem;color:#1d2430;display:flex;flex-direction:column;gap:.35rem}
+.bucket>b{color:var(--pd);font-size:.95rem}
+.bucket .placed{background:#fff;border-radius:7px;padding:.2rem .5rem;font-size:.88rem;border-left:4px solid var(--a)}
+.bucket.flashbad{border-color:#d33;background:#fdeaea}
+
+/* match */
+.match{display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1rem}
+.match .col{display:flex;flex-direction:column;gap:.5rem}
+.mt{background:#fff;border:2px solid #d8dde6;border-radius:10px;padding:.45rem .7rem;text-align:left;color:#1d2430}
+.mt.sel{border-color:var(--p);background:var(--soft);font-weight:700}
+.mt.paired{border-color:#1f8a4c;background:#e6f6ec;cursor:default}
+.mt.bad{animation:shake .35s;border-color:#d33}
+@media (max-width:560px){.match{grid-template-columns:1fr}}
+
+/* order */
+.line{min-height:3rem;border:2px dashed var(--p);border-radius:10px;padding:.45rem;display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.6rem;background:var(--soft)}
+.line:empty::before{content:"Tap the pieces below in the right order";color:#6b7383;font-size:.9rem;padding:.2rem}
+
+/* model */
+.task{background:var(--soft);border:2px solid var(--p);border-radius:12px;padding:.8rem 1rem;margin:.6rem 0}
+.task-h{font-weight:800;color:var(--pd);margin-bottom:.2rem}
+.task p{margin:.2rem 0}
+.toggles{display:flex;gap:.5rem;flex-wrap:wrap;margin:.6rem 0}
+.tgl{border-radius:999px;border:2px solid var(--p);background:var(--p);color:#fff;padding:.2rem .9rem;font-size:.88rem;font-weight:700}
+.tgl.off{background:#fff;color:var(--pd)}
+.essay{background:#fffefb;border:1px solid #e3e6ec;border-radius:12px;padding:.4rem 1.2rem .8rem;font-size:1.05rem;line-height:1.85}
+.para{display:grid;grid-template-columns:8.5rem 1fr;gap:1rem;border-bottom:1px dashed #e3e6ec;padding:.6rem 0}
+.para:last-of-type{border-bottom:0}
+.plabel{font-size:.8rem;font-weight:700;color:var(--pd);padding-top:.35rem;border-right:4px solid var(--a);padding-right:.5rem;text-align:right;line-height:1.3}
+.para p{margin:0}
+@media (max-width:620px){.para{grid-template-columns:1fr;gap:.2rem}.plabel{text-align:left;border-right:0;border-left:4px solid var(--a);padding-left:.5rem}}
+.wcount{text-align:right;font-size:.85rem;color:#6b7383}
+.note{background:#fff8e6;border-left:5px solid var(--a);border-radius:0 10px 10px 0;padding:.5rem .8rem;margin:.6rem 0}
+
+/* your turn */
+.chipbox{border:1px solid #e3e6ec;border-radius:12px;padding:.7rem .9rem;margin:.8rem 0;background:#fafbfc}
+.chip-h{font-weight:700;color:var(--pd);font-size:.9rem;margin:.3rem 0}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.4rem}
+.chip{border-radius:999px;border:2px solid var(--p);background:#fff;color:var(--pd);padding:.15rem .75rem;font-size:.88rem}
+.chip.lkc{border-color:#e0467c;color:#b0205a;border-style:dotted}
+.chip.used{background:#1f8a4c;border-color:#1f8a4c;color:#fff;border-style:solid}
+textarea{width:100%;min-height:14rem;border:2px solid #cfd5df;border-radius:12px;padding:.8rem;font-size:1.05rem;line-height:1.7;resize:vertical}
+textarea:focus{border-color:var(--p);outline:none}
+.meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.6rem;margin:.7rem 0}
+.meter{border:2px solid #d8dde6;border-radius:12px;padding:.5rem .8rem;background:#fff}
+.meter b{display:block;font-size:1.4rem;color:#6b7383}
+.meter span{font-size:.85rem;color:#5b6474}
+.meter.met{border-color:#1f8a4c;background:#e6f6ec}
+.meter.met b{color:#1f8a4c}
+.check{display:flex;flex-direction:column;gap:.35rem;margin:.8rem 0;background:var(--soft);border-radius:12px;padding:.7rem 1rem}
+.check label{display:flex;gap:.6rem;align-items:flex-start}
+.check input{width:1.2rem;height:1.2rem;margin-top:.3rem;accent-color:var(--p)}
+.sample{margin-top:.8rem;border:2px solid var(--a);border-radius:12px;padding:.8rem 1rem;background:#fff;line-height:1.8}
+
+/* finish */
+.bigscore{display:flex;align-items:baseline;gap:1rem;margin:.4rem 0 1rem}
+.bigscore span{font-size:4rem;font-weight:800;color:var(--pd);line-height:1}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.6rem;margin:1rem 0}
+.badge{border:2px dashed #cfd5df;border-radius:12px;padding:.6rem;text-align:center;opacity:.5}
+.badge span{font-size:1.8rem;display:block}
+.badge small{display:block;color:#6b7383}
+.badge.got{opacity:1;border:2px solid var(--a);background:var(--soft)}
+.fin input{border:2px solid #cfd5df;border-radius:10px;padding:.4rem .7rem;margin:0 .5rem;min-width:14rem}
+table.wl{width:100%;border-collapse:collapse;font-size:.92rem;margin-top:.5rem}
+table.wl td{border-bottom:1px solid #e3e6ec;padding:.35rem .4rem}
+table.wl td:last-child{direction:rtl;text-align:right;font-family:Tahoma,Arial,sans-serif}
+.navrow{display:flex;justify-content:space-between;gap:1rem;margin-top:1.4rem}
+
+/* cert, toast, confetti */
+#cert{position:fixed;inset:0;background:rgba(20,25,35,.6);z-index:50;display:grid;place-items:center;padding:1rem}
+#cert[hidden]{display:none}
+.cert-card{background:#fff;max-width:760px;width:100%;border:10px solid var(--p);outline:3px solid var(--a);outline-offset:-22px;border-radius:6px;padding:2.4rem 2rem;text-align:center}
+.cert-card h2{font-size:2.2rem;margin:.2rem 0;color:var(--pd)}
+.cert-card .who{font-size:2rem;font-weight:800;color:var(--p);border-bottom:3px solid var(--a);display:inline-block;padding:0 1rem;margin:.6rem 0}
+.cert-actions{margin-top:1.2rem;display:flex;gap:.6rem;justify-content:center}
+#toast{position:fixed;left:50%;bottom:1.2rem;transform:translateX(-50%) translateY(150%);background:var(--pd);color:#fff;padding:.6rem 1.2rem;border-radius:12px;font-weight:600;z-index:60;transition:transform .3s,opacity .3s;max-width:90vw;opacity:0;pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:70;width:100%;height:100%}
+@media print{
+  body{background:#fff}
+  body.printing>*:not(#cert){display:none!important}
+  body.printing #cert{position:static;background:#fff;display:block}
+  body.printing .cert-actions{display:none}
+  .cert-card{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <span class="series">IELTS Writing Task 2: Essay Language</span>
+    <span class="ltitle">Lesson 3: Good Side, Bad Side</span>
+  </div>
+  <div class="tools">
+    <span class="pill" id="score"></span>
+    <div class="prog" aria-label="Lesson progress"><i id="progbar"></i></div>
+    <button class="tbtn" data-act="save">Save</button>
+    <button class="tbtn" data-act="load">Load</button>
+    <input type="file" id="file" accept=".json,application/json" hidden>
+  </div>
+</header>
+<nav id="rail" aria-label="Lesson steps"></nav>
+<main id="main"></main>
+<footer>Designed by: Nazila Motahari</footer>
+<div id="cert" hidden></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<canvas id="confetti" aria-hidden="true"></canvas>
+<script>const L={"id": "T2EL3", "num": 3, "title": "Good Side, Bad Side", "arTitle": "الجانب الإيجابي والجانب السلبي", "headline": "Every change has two sides", "subtitle": "Learn the words for advantages and disadvantages, and the linkers that contrast them.", "objectives": ["use 12 words and phrases for advantages and disadvantages", "contrast two ideas with however, on the other hand and whereas", "write a balanced paragraph about the benefits and drawbacks of a trend"], "notice": {"intro": "Read the paragraph. Tap the words that show a good side or a bad side.", "ar": "اقرأ الفقرة. اضغط على الكلمات التي تُظهر جانبًا إيجابيًا أو جانبًا سلبيًا.", "lines": ["Working from home has several advantages. It is convenient, and it helps employees save time because they do not need to travel.", "However, there are also some disadvantages. Some workers feel lonely, and long hours at a computer can be harmful to their health."], "targets": ["advantages", "convenient", "save", "disadvantages", "lonely", "harmful"], "note": "Good writers balance both sides. The word ((However)) is the bridge that takes the reader from the good side to the bad side."}, "words": [{"w": "advantage", "pos": "noun", "ar": "ميزة", "def": "a good point that helps you", "ex": "The main [[advantage]] of online shopping is convenience."}, {"w": "disadvantage", "pos": "noun", "ar": "عيب", "def": "a bad point that causes difficulty", "ex": "One [[disadvantage]] of living abroad is being far from family."}, {"w": "downside", "pos": "noun", "ar": "الجانب السلبي", "def": "the negative part of something that is mostly good", "ex": "The [[downside]] of fast delivery is the extra packaging."}, {"w": "beneficial", "pos": "adjective", "ar": "مفيد", "def": "having a good effect", "ex": "Regular exercise is [[beneficial]] for mental health."}, {"w": "harmful", "pos": "adjective", "ar": "ضارّ", "def": "causing damage or injury", "ex": "Spending too long on screens can be [[harmful]] to children's eyes."}, {"w": "have a positive impact on", "pos": "phrase", "ar": "له أثر إيجابي على", "def": "to change something in a good way", "ex": "Public parks [[have a positive impact on]] people's wellbeing.", "forms": ["positive impact", "positive effect"]}, {"w": "have a negative effect on", "pos": "phrase", "ar": "له تأثير سلبي على", "def": "to change something in a bad way", "ex": "Noise can [[have a negative effect on]] students' concentration.", "forms": ["negative effect", "negative impact"]}, {"w": "convenient", "pos": "adjective", "ar": "مريح / ملائم", "def": "easy to use and saves time", "ex": "Online banking is [[convenient]] because you can use it at any time."}, {"w": "affordable", "pos": "adjective", "ar": "بسعر معقول", "def": "cheap enough for most people to buy", "ex": "Public transport should be [[affordable]] for students."}, {"w": "save time and money", "pos": "phrase", "ar": "يوفّر الوقت والمال", "def": "to use less time and less money", "ex": "Shopping online helps people [[save time and money]].", "forms": ["save time", "saves time", "saving time", "saved time", "save money", "saves money", "saving money", "saved money"]}, {"w": "risk", "pos": "noun", "ar": "خطر / مخاطرة", "def": "the possibility that something bad will happen", "ex": "There is a [[risk]] that personal data could be stolen.", "forms": ["risk", "risks"]}, {"w": "on balance", "pos": "phrase", "ar": "بعد الموازنة / بشكل عام", "def": "after thinking about both sides", "ex": "[[On balance]], the benefits of the scheme are greater than the costs.", "forms": ["on balance"]}], "practiceLead": "Use the new words in IELTS-style sentences. Your first answer counts.", "practiceAr": "استخدم الكلمات الجديدة في جمل بأسلوب الآيلتس. إجابتك الأولى هي التي تُحتسب.", "practice": [{"type": "sort", "q": "Is it a good side or a bad side?", "buckets": ["Advantage", "Disadvantage"], "items": [{"t": "beneficial", "b": 0}, {"t": "harmful", "b": 1}, {"t": "convenient", "b": 0}, {"t": "downside", "b": 1}, {"t": "affordable", "b": 0}, {"t": "risk", "b": 1}, {"t": "save time", "b": 0}, {"t": "have a negative effect on", "b": 1}], "why": ""}, {"type": "mc", "q": "Online courses are ___ because students can study from home.", "options": ["convenient", "harmful", "risk", "downside"], "a": 0, "why": "[[Convenient]] = easy and saves time."}, {"type": "mc", "q": "Eating too much sugar is ___ to your teeth.", "options": ["harmful", "beneficial", "affordable", "convenient"], "a": 0, "why": "[[Harmful]] to = causes damage to."}, {"type": "mc", "q": "The ___ of cheap flights is that they increase pollution.", "options": ["downside", "advantage", "on balance", "beneficial"], "a": 0, "why": "'Increase pollution' is a bad point, so [[downside]]."}, {"type": "match", "q": "Match each word with its opposite.", "pairs": [["advantage", "disadvantage"], ["beneficial", "harmful"], ["positive impact", "negative effect"], ["affordable", "expensive"], ["convenient", "inconvenient"]], "why": ""}, {"type": "mc", "q": "Cars are convenient. ___, they cause air pollution.", "options": ["However", "Because", "For example", "Moreover"], "a": 0, "why": "((However)) starts a new sentence that contrasts with the one before."}, {"type": "mc", "q": "Trains are fast, ___ buses are cheaper.", "options": ["whereas", "therefore", "for instance", "firstly"], "a": 0, "why": "((Whereas)) joins two contrasting facts inside one sentence."}, {"type": "mc", "q": "Smartphones can ___ children's sleep if they use them late at night.", "options": ["have a negative effect on", "have a positive impact on", "save time and", "be beneficial"], "a": 0, "why": "Using phones late at night damages sleep, so it is a [[negative effect]]."}, {"type": "mc", "q": "Online shopping helps busy families ___.", "options": ["save time and money", "be harmful", "take a risk of", "on balance"], "a": 0, "why": "[[Save time and money]] is a very common collocation in Task 2 essays."}, {"type": "mc", "q": "___, I believe the advantages of tourism are greater than its disadvantages.", "options": ["On balance", "Whereas", "Downside", "Affordable"], "a": 0, "why": "[[On balance]] shows you have thought about both sides before deciding."}], "upgradeLead": "A Band 5 answer says 'good' and 'bad'. A Band 6.5 answer says exactly how, and contrasts the two sides clearly.", "upgradeAr": "إجابة المستوى 5 تقول 'جيد' و'سيئ'. إجابة المستوى 6.5 توضّح كيف بالضبط، وتقارن بين الجانبين بوضوح.", "upgrade": [{"type": "mc", "q": "Band 5: 'Online shopping is good and bad.' Which is the best upgrade?", "options": ["Online shopping is convenient for busy people; however, it can have a negative effect on local shops.", "Online shopping is good. It is bad.", "Online shopping is good and it is also very bad.", "Good and bad is online shopping."], "a": 0, "why": "It explains the good side, the bad side, and links them with ((however))."}, {"type": "mc", "q": "Band 5: 'Cars make pollution. This is bad.' Which is the best upgrade?", "options": ["Private cars can be harmful to the environment because they produce large amounts of pollution.", "Cars is harmful very much pollution.", "Cars make pollution and pollution is bad and bad.", "Cars are beneficial for pollution."], "a": 0, "why": "[[Harmful]] to the environment + a reason with 'because'."}, {"type": "order", "q": "Build two contrasting sentences.", "tiles": ["On the one hand,", "living in a city", "is convenient.", "On the other hand,", "it can be", "very expensive."], "why": "((On the one hand)) … ((On the other hand)) … always comes as a pair."}, {"type": "mc", "q": "Which sentence uses 'whereas' correctly?", "options": ["Online classes are flexible, whereas face-to-face classes offer more contact with teachers.", "Whereas online classes. They are flexible.", "Online classes are flexible whereas.", "Whereas is flexible for online classes."], "a": 0, "why": "Fact A, ((whereas)) fact B: both halves are full clauses."}, {"type": "order", "q": "Build a sentence about an advantage.", "tiles": ["One major", "advantage", "of public transport", "is that", "it helps people", "save money."], "why": "One major [[advantage]] of X is that + a full clause."}], "model": {"question": "More and more people are choosing to shop online rather than in traditional stores. Discuss the advantages and disadvantages of this trend.", "ar": "يختار عدد متزايد من الناس التسوّق عبر الإنترنت بدلًا من المتاجر التقليدية. ناقش مزايا هذا الاتجاه وعيوبه.", "note": "This question says 'discuss', not 'do the advantages outweigh…?', so you do not have to give an opinion. You must cover both sides equally. A short 'on balance' at the end is acceptable.", "paras": [{"label": "Introduction", "text": "In recent years, a growing number of consumers have started buying goods on the internet instead of visiting shops. This trend has changed the way many people spend both their money and their free time. This essay will discuss the main [[advantages]] and [[disadvantages]] of this trend."}, {"label": "Body 1: advantages", "text": "((On the one hand)), online shopping is extremely [[convenient]]. Customers can order products at any time of day, and the goods are delivered to their door. ((As a result)), people [[save time and money]] ((because)) they do not need to drive to a mall or pay for parking. ((In addition)), prices online are often more [[affordable]], ((since)) customers can compare several websites in a few minutes. ((For instance)), a student who needs a new laptop can easily find the cheapest offer."}, {"label": "Body 2: disadvantages", "text": "((On the other hand)), this trend also has some [[downsides]]. ((Firstly)), customers cannot see or touch products before they buy them, ((so)) there is a [[risk]] that the item will be different from the picture. ((As a result)), customers often have to spend time returning goods. ((Moreover)), the growth of online shopping can [[have a negative effect on]] small local shops, which may lose customers and close. ((For example)), in many towns, family-run bookshops and clothing stores have already closed ((because)) they cannot compete with large websites. ((Whereas)) a visit to a mall is a social activity, shopping online is something people usually do alone."}, {"label": "Conclusion", "text": "((In conclusion)), shopping online is [[convenient]] and [[affordable]], ((but)) it also brings [[risks]] for customers and for local businesses. [[On balance]], I believe it is [[beneficial]], as long as people continue to support the shops in their community."}], "checks": [{"type": "mc", "q": "Does this question require the writer to give an opinion?", "options": ["No. 'Discuss' asks for both sides, but a short opinion at the end is acceptable.", "Yes. The whole essay must be an opinion.", "No, and opinions are not allowed.", "Yes, but only in the introduction."], "a": 0, "why": "Compare Lesson 1: '[[outweigh]]' needs an opinion; 'discuss' does not."}, {"type": "mc", "q": "Which phrase starts the paragraph about disadvantages?", "options": ["On the other hand", "In addition", "For instance", "As a result"], "a": 0, "why": "((On the one hand)) in Body 1 is answered by ((On the other hand)) in Body 2."}, {"type": "mc", "q": "Which word in Body paragraph 1 means 'cheap enough for most people'?", "options": ["affordable", "convenient", "beneficial", "risk"], "a": 0, "why": "[[Affordable]] prices = prices most people can pay."}]}, "yourturn": {"task": "Question: 'Many young people now work part-time while they are at university. Discuss the advantages and disadvantages.' Write one paragraph about both sides. Use contrast linkers to move from one side to the other.", "ar": "اكتب فقرة واحدة عن الجانبين. استخدم أدوات الربط للمقارنة عند الانتقال من جانب إلى آخر.", "min": 60, "useWords": 4, "useLinks": 2, "links": ["on the one hand", "on the other hand", "however", "whereas", "in addition", "for instance"], "checklist": ["I wrote about both advantages and disadvantages", "I used a contrast linker to move between them", "I gave a reason for each point", "I used at least 4 lesson words"], "sample": "((On the one hand)), working part-time is [[beneficial]] for students, ((because)) they earn their own money and learn to manage their time. ((In addition)), a job can [[have a positive impact on]] their confidence. ((On the other hand)), there is a [[risk]] that students will feel tired and fall behind in their studies. ((Whereas)) some learners can balance both, others find that long working hours are [[harmful]] to their grades."}, "next": "Lesson 4: Why It Happens, How to Fix It (causes and solutions)"};</script>
+<script>
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const mark=s=>esc(s).replace(/\[\[(.+?)\]\]/g,'<mark class="lw">$1</mark>').replace(/\(\((.+?)\)\)/g,'<span class="lk">$1</span>');
+const plain=s=>String(s).replace(/\[\[|\]\]|\(\(|\)\)/g,"");
+const STEPS=[["notice","Notice","لاحظ","👀"],["words","Words","الكلمات","🃏"],["practice","Practice","تدرّب","✏️"],["upgrade","Upgrade it","طوِّر الجملة","🚀"],["model","Model answer","الإجابة النموذجية","📄"],["yourturn","Your turn","دورك","🖊️"],["finish","Finish","النهاية","🏆"]];
+const BADGES={notice:"Sharp eyes",words:"Word explorer",practice:"Practice pro",upgrade:"Band booster",model:"Essay reader",yourturn:"Writer",finish:"Lesson champion"};
+
+const ITEMS={};
+L.practice.forEach((it,i)=>ITEMS["p"+i]=it);
+L.upgrade.forEach((it,i)=>ITEMS["u"+i]=it);
+L.model.checks.forEach((it,i)=>ITEMS["m"+i]=it);
+const SCORED=Object.keys(ITEMS), MAX=SCORED.length*10;
+
+function fresh(){return {lesson:L.id,name:"",step:"notice",done:{},res:{},found:[],revealed:false,seen:[],text:"",cl:{},sample:false};}
+let S=fresh(), cur="notice", hideLw=false, hideLk=false;
+
+/* notice tokens */
+const TOK=[];
+L.notice.lines.forEach((line,li)=>line.split(/\s+/).forEach(t=>TOK.push({t,li,c:t.toLowerCase().replace(/[^a-z'’-]/g,"")})));
+const TG=new Set(L.notice.targets);
+const TGI=TOK.map((o,i)=>TG.has(o.c)?i:-1).filter(i=>i>=0);
+
+/* your-turn detection */
+function formsOf(w){if(w.forms)return w.forms;const b=w.w.toLowerCase();const f=[b,b+"s",b+"es",b+"ed",b+"d",b+"ing"];if(b.endsWith("e"))f.push(b.slice(0,-1)+"ing");return f;}
+function rx(forms){return new RegExp("(^|[^a-z])("+forms.map(f=>f.toLowerCase().replace(/[.*+?^${}()|[\]\\]/g,"\\$&").replace(/\s+/g,"[\\s,]+")).join("|")+")(?![a-z])","i");}
+const WRX=L.words.map(w=>rx(formsOf(w)));
+const LRX=L.yourturn.links.map(l=>rx([l]));
+const wc=()=>{const t=S.text.trim();return t?t.split(/\s+/).length:0;};
+const usedW=()=>WRX.map(r=>r.test(S.text));
+const usedL=()=>LRX.map(r=>r.test(S.text));
+
+function shuf(n){const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function st(k){
+  if(!S.res[k]){
+    const it=ITEMS[k], r={done:false,pts:0};
+    if(it.type==="mc"){r.perm=shuf(it.options.length);r.tried=[];}
+    if(it.type==="sort"){r.perm=shuf(it.items.length);r.placed={};r.bad=[];}
+    if(it.type==="match"){r.lp=shuf(it.pairs.length);r.rp=shuf(it.pairs.length);r.m={};r.bad=[];}
+    if(it.type==="order"){let p;do{p=shuf(it.tiles.length);}while(p.every((v,i)=>it.tiles[v]===it.tiles[i]));r.perm=p;r.ans=[];r.checks=0;r.wrong=false;}
+    S.res[k]=r;
+  }
+  return S.res[k];
+}
+const score=()=>SCORED.reduce((t,k)=>t+(S.res[k]&&S.res[k].done?S.res[k].pts:0),0);
+const pct=()=>Math.round(100*score()/MAX);
+
+function stepDone(id){
+  const Y=L.yourturn;
+  switch(id){
+    case "notice": return S.revealed||TGI.every(i=>S.found.includes(i));
+    case "words": return L.words.every((_,i)=>S.seen.includes(i));
+    case "practice": return L.practice.every((_,i)=>S.res["p"+i]&&S.res["p"+i].done);
+    case "upgrade": return L.upgrade.every((_,i)=>S.res["u"+i]&&S.res["u"+i].done);
+    case "model": return L.model.checks.every((_,i)=>S.res["m"+i]&&S.res["m"+i].done);
+    case "yourturn": return wc()>=Y.min&&usedW().filter(Boolean).length>=Y.useWords&&usedL().filter(Boolean).length>=Y.useLinks;
+    case "finish": return !!S.done.finish;
+  }
+}
+function checkSteps(){
+  STEPS.forEach(([id])=>{if(id!=="finish"&&!S.done[id]&&stepDone(id)){S.done[id]=true;toast("🏅 Badge earned: "+BADGES[id]);confetti(90);}});
+  renderTop();renderRail();
+}
+
+/* chrome */
+function renderTop(){
+  $("#score").textContent="⭐ "+score()+" / "+MAX;
+  const n=STEPS.filter(([id])=>S.done[id]).length;
+  $("#progbar").style.width=Math.round(100*n/STEPS.length)+"%";
+}
+function renderRail(){
+  $("#rail").innerHTML=STEPS.map(([id,en,ar],i)=>`<button class="rs ${id===cur?"on":""} ${S.done[id]?"ok":""}" data-act="go" data-s="${id}" ${id===cur?'aria-current="step"':""}><span class="n">${S.done[id]?"✓":i+1}</span><span class="t">${en}<small>${ar}</small></span></button>`).join("");
+}
+function navHTML(){
+  const i=STEPS.findIndex(s=>s[0]===cur);
+  const b=i>0?`<button class="btn ghost" data-act="go" data-s="${STEPS[i-1][0]}">Back</button>`:"<span></span>";
+  const n=i<STEPS.length-1?`<button class="btn" data-act="go" data-s="${STEPS[i+1][0]}">Next: ${STEPS[i+1][1]}</button>`:"";
+  return `<div class="navrow">${b}${n}</div>`;
+}
+function go(id){
+  cur=id;S.step=id;
+  if(id==="finish"&&!S.done.finish){S.done.finish=true;toast("🏆 Badge earned: "+BADGES.finish);confetti(160);}
+  render();window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+}
+function render(){
+  renderTop();renderRail();
+  const f={notice:pNotice,words:pWords,practice:pPractice,upgrade:pUpgrade,model:pModel,yourturn:pYour,finish:pFinish}[cur];
+  $("#main").innerHTML=f()+navHTML();
+  if(cur==="yourturn")updMeters();
+}
+
+/* steps */
+function hero(){
+  return `<section class="hero"><div class="num" aria-hidden="true">${L.num}</div><h1>${esc(L.headline)}</h1><p class="sub">${esc(L.subtitle)}</p><p class="ar">${esc(L.arTitle)}</p>
+  <div class="obj"><b>By the end of this lesson, you will…</b><ul>${L.objectives.map(o=>`<li>${esc(o)}</li>`).join("")}</ul></div></section>`;
+}
+function pNotice(){
+  const N=L.notice, f=new Set(S.found), done=stepDone("notice"), lines=[];
+  TOK.forEach((o,i)=>{(lines[o.li]=lines[o.li]||[]).push(`<span class="tok ${(f.has(i)||(S.revealed&&TG.has(o.c)))?"hit":""}" data-act="tok" data-i="${i}">${esc(o.t)}</span>`);});
+  return hero()+`<section class="card"><h2>Notice</h2><p class="lead">${esc(N.intro)}</p><p class="ar">${esc(N.ar)}</p>
+  <div class="passage">${lines.map(l=>`<p>${l.join(" ")}</p>`).join("")}</div>
+  <div class="row"><span class="count">Found ${TGI.filter(i=>f.has(i)).length} of ${TGI.length}</span>${done?"":'<button class="btn ghost" data-act="reveal">Show me</button>'}</div>
+  ${done?`<div class="fb ok">${mark(N.note)}</div>`:""}</section>`;
+}
+function pWords(){
+  return `<section class="card"><h2>Words</h2><p class="lead">Tap each card to see the meaning, the Arabic and an example. Tap 🔊 to hear it.</p>
+  <p class="ar">اضغط على كل بطاقة لترى المعنى والترجمة العربية ومثالًا. اضغط 🔊 للاستماع.</p>
+  <div class="count" id="seencount">Opened ${S.seen.length} of ${L.words.length}</div>
+  <div class="cards">${L.words.map((w,i)=>`<div class="flip ${S.seen.includes(i)?"seen":""}" data-act="flip" data-i="${i}" tabindex="0" role="button" aria-label="${esc(w.w)}"><div class="in">
+   <div class="face front"><span class="pos">${esc(w.pos)}</span><b>${esc(w.w)}</b><button class="say" data-act="say" data-t="${esc(w.say||w.w)}" aria-label="Listen to ${esc(w.w)}">🔊</button></div>
+   <div class="face back"><p class="ar big">${esc(w.ar)}</p><p class="def">${esc(w.def)}</p><p class="ex">${mark(w.ex)}</p></div></div></div>`).join("")}</div></section>`;
+}
+function itemsHTML(prefix,arr){return arr.map((_,i)=>`<div id="it-${prefix}${i}">${itemHTML(prefix+i,i+1)}</div>`).join("");}
+function pPractice(){
+  return `<section class="card"><h2>Practice</h2><p class="lead">${esc(L.practiceLead)}</p><p class="ar">${esc(L.practiceAr)}</p></section>`+itemsHTML("p",L.practice);
+}
+function pUpgrade(){
+  return `<section class="card"><h2>Upgrade it</h2><p class="lead">${esc(L.upgradeLead)}</p><p class="ar">${esc(L.upgradeAr)}</p></section>`+itemsHTML("u",L.upgrade);
+}
+function pModel(){
+  const M=L.model, words=M.paras.map(p=>plain(p.text)).join(" ").trim().split(/\s+/).length;
+  return `<section class="card"><h2>Model answer</h2>
+  <div class="task"><div class="task-h">Task 2 question</div><p>${esc(M.question)}</p><p class="ar">${esc(M.ar)}</p><p class="small">Spend about 40 minutes on this task. Write at least 250 words.</p></div>
+  <div class="note">${mark(M.note)}</div>
+  <div class="toggles"><button class="tgl ${hideLw?"off":""}" data-act="tg" data-c="lw" aria-pressed="${!hideLw}">Lesson words</button><button class="tgl ${hideLk?"off":""}" data-act="tg" data-c="lk" aria-pressed="${!hideLk}">Linking words</button></div>
+  <article class="essay ${hideLw?"hide-lw":""} ${hideLk?"hide-lk":""}">${M.paras.map(p=>`<div class="para"><div class="plabel">${esc(p.label)}</div><p>${mark(p.text)}</p></div>`).join("")}<div class="wcount">${words} words</div></article>
+  <p class="small"><mark class="lw">Underlined</mark> = words from this lesson. <span class="lk">Dotted</span> = linking words.</p></section>
+  <h3>Check your understanding</h3>`+itemsHTML("m",M.checks);
+}
+function pYour(){
+  const Y=L.yourturn;
+  return `<section class="card"><h2>Your turn</h2><div class="task"><p>${mark(Y.task)}</p><p class="ar">${esc(Y.ar)}</p></div>
+  <div class="chipbox"><div class="chip-h">Lesson words: use at least ${Y.useWords}</div>
+  <div class="chips">${L.words.map((w,i)=>`<button class="chip lwc" data-act="ins" data-t="${esc(w.chip||w.w)}" id="cw${i}">${esc(w.chip||w.w)}</button>`).join("")}</div>
+  <div class="chip-h">Linking words: use at least ${Y.useLinks}</div>
+  <div class="chips">${Y.links.map((l,i)=>`<button class="chip lkc" data-act="ins" data-t="${esc(l)}" id="cl${i}">${esc(l)}</button>`).join("")}</div>
+  <p class="small">Tap a word to add it to your writing. Words you have used turn green.</p></div>
+  <label for="ta" class="chip-h">Write here</label>
+  <textarea id="ta" spellcheck="true">${esc(S.text)}</textarea>
+  <div class="meters"><div class="meter" id="m1"><b></b><span>words (aim: ${Y.min}+)</span></div><div class="meter" id="m2"><b></b><span>lesson words (target: ${Y.useWords})</span></div><div class="meter" id="m3"><b></b><span>linking words (target: ${Y.useLinks})</span></div></div>
+  <div class="check"><b>Check your writing</b>${Y.checklist.map((c,i)=>`<label><input type="checkbox" data-cl="${i}" ${S.cl[i]?"checked":""}> ${esc(c)}</label>`).join("")}</div>
+  <button class="btn ghost" data-act="sample">${S.sample?"Hide":"Show"} sample answer</button>
+  ${S.sample?`<div class="sample">${mark(Y.sample)}</div>`:""}</section>`;
+}
+function updMeters(){
+  const Y=L.yourturn,n=wc(),uw=usedW(),ul=usedL(),a=uw.filter(Boolean).length,b=ul.filter(Boolean).length;
+  const set=(id,v,ok)=>{const m=$("#"+id);if(!m)return;m.querySelector("b").textContent=v;m.classList.toggle("met",ok);};
+  set("m1",n,n>=Y.min);set("m2",a,a>=Y.useWords);set("m3",b,b>=Y.useLinks);
+  uw.forEach((u,i)=>{const c=$("#cw"+i);if(c)c.classList.toggle("used",u);});
+  ul.forEach((u,i)=>{const c=$("#cl"+i);if(c)c.classList.toggle("used",u);});
+}
+function pFinish(){
+  const p=pct();
+  return `<section class="card fin"><h2>Finish</h2>
+  <div class="bigscore"><span>${p}%</span><small>${score()} of ${MAX} points<br>Your first answer in each activity counts.</small></div>
+  ${p>=80?`<p><b>Excellent work! You have earned your certificate.</b></p><p class="ar">عمل ممتاز! لقد حصلت على شهادتك.</p>
+    <div class="row"><label>Your name<input id="nm" value="${esc(S.name)}" autocomplete="name"></label><button class="btn" data-act="cert">Create certificate</button></div>`
+  :`<p><b>You need 80% for a certificate.</b> Finish every activity first. If you have finished, reset the lesson and try again.</p><p class="ar">تحتاج إلى 80٪ للحصول على الشهادة. أكمل جميع الأنشطة أولًا، ثم أعد الدرس إذا احتجت.</p>`}
+  <h3>Your badges</h3><div class="badges">${STEPS.map(([id,en,,ic])=>`<div class="badge ${S.done[id]?"got":""}"><span>${ic}</span><b>${BADGES[id]}</b><small>${en}</small></div>`).join("")}</div>
+  <div class="row"><button class="btn ghost" data-act="save">Save progress</button><button class="btn ghost" data-act="reset">Reset lesson</button></div></section>
+  <section class="card"><h2>Words from this lesson</h2><table class="wl">${L.words.map(w=>`<tr><td><b>${esc(w.w)}</b> <span class="small">${esc(w.pos)}</span></td><td>${esc(w.def)}</td><td>${esc(w.ar)}</td></tr>`).join("")}</table>
+  ${L.next?`<p class="note"><b>Next lesson:</b> ${esc(L.next)}</p>`:""}</section>`;
+}
+
+/* items */
+function itemHTML(k,n){
+  const it=ITEMS[k], r=st(k);
+  let h=`<div class="item ${r.done?"done":""}"><div class="qnum">${n}</div><div class="qbody">`;
+  if(it.type==="mc"){
+    let q=esc(it.q);
+    q=q.replace("___",r.done?`<span class="gap">${esc(it.options[it.a])}</span>`:`<span class="gap">&nbsp;</span>`);
+    h+=`<p class="q">${q}</p>${it.ar?`<p class="ar">${esc(it.ar)}</p>`:""}<div class="opts">`;
+    h+=r.perm.map(o=>{const cls=(r.done&&o===it.a)?"right":r.tried.includes(o)&&o!==it.a?"wrong":"";return `<button class="opt ${cls}" data-act="mc" data-k="${k}" data-o="${o}" ${r.done||r.tried.includes(o)?"disabled":""}>${esc(it.options[o])}</button>`;}).join("");
+    h+=`</div>`;
+    if(r.done)h+=`<div class="fb ok"><b>${r.pts?"Correct! +10":"Correct."}</b> ${mark(it.why||"")}</div>`;
+    else if(r.tried.length)h+=`<div class="fb no"><b>Not quite.</b> Try again.</div>`;
+  }
+  if(it.type==="sort"){
+    const left=r.perm.filter(i=>r.placed[i]===undefined);
+    h+=`<p class="q">${esc(it.q)}</p><p class="hint">Tap a card, then tap the box it belongs in.</p><div class="bank">${left.map(i=>`<button class="tile ${r.sel===i?"sel":""}" data-act="spick" data-k="${k}" data-i="${i}">${esc(it.items[i].t)}</button>`).join("")}</div>
+    <div class="buckets">${it.buckets.map((b,bi)=>`<button class="bucket" data-act="sdrop" data-k="${k}" data-b="${bi}"><b>${esc(b)}</b>${Object.keys(r.placed).filter(i=>r.placed[i]===bi).map(i=>`<span class="placed">${esc(it.items[i].t)}</span>`).join("")}</button>`).join("")}</div>`;
+    if(r.done)h+=`<div class="fb ok"><b>Done! +${r.pts}</b> ${r.bad.length?`You had ${r.bad.length} wrong first try.`:"Perfect first time."} ${mark(it.why||"")}</div>`;
+  }
+  if(it.type==="match"){
+    h+=`<p class="q">${esc(it.q)}</p><p class="hint">Tap a word on the left, then its partner on the right.</p><div class="match"><div class="col">${r.lp.map(i=>`<button class="mt ${r.m[i]?"paired":""} ${r.sel===i?"sel":""}" data-act="ml" data-k="${k}" data-i="${i}" ${r.m[i]||r.done?"disabled":""}>${esc(it.pairs[i][0])}</button>`).join("")}</div>
+    <div class="col">${(r.done?r.lp:r.rp).map(i=>`<button class="mt ${r.m[i]?"paired":""}" data-act="mr" data-k="${k}" data-i="${i}" ${r.m[i]||r.done?"disabled":""}>${esc(it.pairs[i][1])}</button>`).join("")}</div></div>`;
+    if(r.done)h+=`<div class="fb ok"><b>All matched! +${r.pts}</b> ${r.bad.length?`You had ${r.bad.length} wrong first try.`:"Perfect first time."} ${mark(it.why||"")}</div>`;
+  }
+  if(it.type==="order"){
+    const rest=r.perm.filter(i=>!r.ans.includes(i));
+    h+=`<p class="q">${esc(it.q)}</p>${it.ar?`<p class="ar">${esc(it.ar)}</p>`:""}<div class="line">${r.ans.map(i=>`<button class="tile" data-act="oback" data-k="${k}" data-i="${i}" ${r.done?"disabled":""}>${esc(it.tiles[i])}</button>`).join("")}</div>
+    <div class="bank">${rest.map(i=>`<button class="tile" data-act="oadd" data-k="${k}" data-i="${i}">${esc(it.tiles[i])}</button>`).join("")}</div>`;
+    if(!r.done){h+=`<div class="row"><button class="btn" data-act="ocheck" data-k="${k}" ${r.ans.length<it.tiles.length?"disabled":""}>Check</button>${r.wrong?`<button class="btn ghost" data-act="oshow" data-k="${k}">Show answer</button>`:""}</div>`;
+      if(r.wrong)h+=`<div class="fb no"><b>Not quite.</b> Tap pieces in the answer line to move them back, then try again.</div>`;}
+    else h+=`<div class="fb ok"><b>${r.pts?"Correct! +10":"Here is the answer."}</b> ${mark(it.why||"")}</div>`;
+  }
+  return h+`</div></div>`;
+}
+function reItem(k){const el=$("#it-"+k);if(el){const n=el.querySelector(".qnum").textContent;el.innerHTML=itemHTML(k,n);}checkSteps();}
+function flashEl(sel){const e=$(sel);if(e){e.classList.add("bad","flashbad");setTimeout(()=>e.classList.remove("bad","flashbad"),450);}}
+
+/* speech */
+let voice=null;
+function pickVoice(){const v=speechSynthesis.getVoices();voice=v.find(x=>/en-GB/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null;}
+if("speechSynthesis" in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function say(t){if(!("speechSynthesis" in window)){toast("Audio is not available in this browser.");return;}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);if(voice)u.voice=voice;u.lang=voice?voice.lang:"en-GB";u.rate=.9;speechSynthesis.speak(u);}
+
+/* events */
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const a=b.dataset.act, k=b.dataset.k;
+  if(a==="go")return go(b.dataset.s);
+  if(a==="save")return save();
+  if(a==="load")return $("#file").click();
+  if(a==="say"){e.stopPropagation();return say(b.dataset.t);}
+  if(a==="tok"){
+    const i=+b.dataset.i;
+    if(S.revealed||S.found.includes(i))return;
+    if(TG.has(TOK[i].c)){S.found.push(i);render();checkSteps();}
+    else{b.classList.add("miss");setTimeout(()=>b.classList.remove("miss"),500);}
+    return;
+  }
+  if(a==="reveal"){S.revealed=true;render();checkSteps();return;}
+  if(a==="flip"){flip(b);return;}
+  if(a==="mc"){const r=st(k),o=+b.dataset.o;if(r.done)return;r.tried.push(o);if(o===ITEMS[k].a){r.done=true;r.pts=r.tried.length===1?10:0;if(r.pts)confetti(25);}reItem(k);return;}
+  if(a==="spick"){const r=st(k);r.sel=+b.dataset.i;reItem(k);return;}
+  if(a==="sdrop"){const r=st(k),it=ITEMS[k],bi=+b.dataset.b;if(r.sel==null||r.done)return;
+    if(it.items[r.sel].b===bi){r.placed[r.sel]=bi;r.sel=null;if(Object.keys(r.placed).length===it.items.length){r.done=true;r.pts=Math.round(10*(it.items.length-r.bad.length)/it.items.length);confetti(40);}reItem(k);}
+    else{if(!r.bad.includes(r.sel))r.bad.push(r.sel);flashEl(`#it-${k} .bucket[data-b="${bi}"]`);}
+    return;}
+  if(a==="ml"){const r=st(k);r.sel=+b.dataset.i;reItem(k);return;}
+  if(a==="mr"){const r=st(k),it=ITEMS[k],i=+b.dataset.i;if(r.sel==null||r.done)return;
+    if(i===r.sel){r.m[i]=true;r.sel=null;if(Object.keys(r.m).length===it.pairs.length){r.done=true;r.pts=Math.round(10*(it.pairs.length-r.bad.length)/it.pairs.length);confetti(40);}reItem(k);}
+    else{if(!r.bad.includes(r.sel))r.bad.push(r.sel);flashEl(`#it-${k} .mt[data-act="mr"][data-i="${i}"]`);}
+    return;}
+  if(a==="oadd"){const r=st(k);if(r.done)return;r.ans.push(+b.dataset.i);r.wrong=false;reItem(k);return;}
+  if(a==="oback"){const r=st(k);if(r.done)return;r.ans=r.ans.filter(x=>x!==+b.dataset.i);reItem(k);return;}
+  if(a==="ocheck"){const r=st(k),it=ITEMS[k];r.checks++;
+    if(r.ans.map(i=>it.tiles[i]).join(" ")===it.tiles.join(" ")){r.done=true;r.pts=r.checks===1?10:0;if(r.pts)confetti(25);}else r.wrong=true;
+    reItem(k);return;}
+  if(a==="oshow"){const r=st(k),it=ITEMS[k];r.ans=it.tiles.map((_,i)=>i);r.done=true;r.pts=0;reItem(k);return;}
+  if(a==="tg"){if(b.dataset.c==="lw")hideLw=!hideLw;else hideLk=!hideLk;render();return;}
+  if(a==="ins"){const ta=$("#ta");if(!ta)return;const s=ta.selectionStart,en=ta.selectionEnd,before=ta.value.slice(0,s);
+    const pre=before&&!/\s$/.test(before)?" ":"";ta.setRangeText(pre+b.dataset.t+" ",s,en,"end");ta.focus();S.text=ta.value;updMeters();checkSteps();return;}
+  if(a==="sample"){if(!S.sample&&wc()<L.yourturn.min&&!confirm("Try writing your own answer first. Show the sample anyway?"))return;S.sample=!S.sample;render();return;}
+  if(a==="cert")return cert();
+  if(a==="print"){document.body.classList.add("printing");window.print();setTimeout(()=>document.body.classList.remove("printing"),500);return;}
+  if(a==="closecert"){$("#cert").hidden=true;return;}
+  if(a==="reset"){if(confirm("Reset this lesson? All answers and your writing will be cleared.")){S=fresh();cur="notice";render();toast("Lesson reset.");}return;}
+});
+function flip(card){
+  card.classList.toggle("on");
+  const i=+card.dataset.i;
+  if(!S.seen.includes(i)){S.seen.push(i);card.classList.add("seen");const c=$("#seencount");if(c)c.textContent=`Opened ${S.seen.length} of ${L.words.length}`;checkSteps();}
+}
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("flip")){e.preventDefault();flip(e.target);}});
+document.addEventListener("input",e=>{if(e.target.id==="ta"){S.text=e.target.value;updMeters();checkSteps();}if(e.target.id==="nm")S.name=e.target.value;});
+document.addEventListener("change",e=>{if(e.target.dataset&&e.target.dataset.cl!==undefined)S.cl[e.target.dataset.cl]=e.target.checked;});
+
+/* save / load */
+function save(){
+  const blob=new Blob([JSON.stringify(S,null,1)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`Task2-EssayLanguage-L${L.num}-progress.json`;
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+  toast("Progress saved to your downloads.");
+}
+$("#file").addEventListener("change",e=>{
+  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=()=>{try{const o=JSON.parse(rd.result);if(o.lesson!==L.id){alert("This file is for a different lesson.");return;}
+    S=Object.assign(fresh(),o);cur=S.step||"notice";render();toast("Progress loaded.");}catch(err){alert("This file could not be read. Choose a progress file saved from this lesson.");}};
+  rd.readAsText(f);e.target.value="";
+});
+
+/* certificate */
+function cert(){
+  const nm=($("#nm")&&$("#nm").value.trim())||"";
+  if(!nm){toast("Type your name first.");$("#nm")&&$("#nm").focus();return;}
+  S.name=nm;
+  const d=new Date().toLocaleDateString("en-GB",{day:"numeric",month:"long",year:"numeric"});
+  $("#cert").innerHTML=`<div class="cert-card" role="dialog" aria-label="Certificate"><div style="font-size:3rem">🏆</div><h2>Certificate of Achievement</h2>
+  <p>This certifies that</p><div class="who">${esc(nm)}</div>
+  <p>has successfully completed<br><b>IELTS Writing Task 2: Essay Language</b><br>Lesson ${L.num}: ${esc(L.title)}</p>
+  <p>Score: <b>${pct()}%</b> &nbsp; Date: ${d}</p><p class="small">Designed by: Nazila Motahari</p>
+  <div class="cert-actions"><button class="btn" data-act="print">Print</button><button class="btn ghost" data-act="closecert">Close</button></div></div>`;
+  $("#cert").hidden=false;confetti(220);
+}
+
+/* toast + confetti */
+let tt;function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),2600);}
+const cv=$("#confetti"),cx=cv.getContext("2d");let parts=[],running=false;
+function confetti(n){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  cv.width=innerWidth;cv.height=innerHeight;
+  const cs=getComputedStyle(document.documentElement),cols=[cs.getPropertyValue("--p"),cs.getPropertyValue("--a"),"#e0467c","#1f8a4c","#ffffff"];
+  for(let i=0;i<n;i++)parts.push({x:innerWidth/2+(Math.random()-.5)*200,y:innerHeight*.35,vx:(Math.random()-.5)*14,vy:-Math.random()*12-4,s:Math.random()*7+4,r:Math.random()*6,c:cols[i%cols.length].trim(),l:120});
+  if(!running){running=true;requestAnimationFrame(tick);}
+}
+function tick(){
+  cx.clearRect(0,0,cv.width,cv.height);
+  parts.forEach(p=>{p.vy+=.35;p.x+=p.vx;p.y+=p.vy;p.r+=.1;p.l--;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore();});
+  parts=parts.filter(p=>p.l>0&&p.y<cv.height+20);
+  if(parts.length)requestAnimationFrame(tick);else{running=false;cx.clearRect(0,0,cv.width,cv.height);}
+}
+
+render();
+})();
+
+</script>
+</body>
+</html>
